@@ -1,0 +1,58 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Songs Homepage - Welcome to My Music Store</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Welcome to My Music Store</h1>
+</header>
+<main>
+    <!-- Display radio buttons for each song,
+            the value should be the trackId
+            and the displayed text should be Title: <songTitle>, Genre:<genre>, Release Year: <releaseYear> -->
+    <!-- <input type="radio" name="trackId" value="1"> Song 1 <br/>
+    <input type="radio" name="trackId" value="2"> Song 2<br/>
+    <input type="radio" name="trackId" value="3"> Song 3 <br/>
+
+    iterStat is a variable that lets you track details about the current iteration when looping through a collection
+    -->
+    <form th:method="POST" th:action="@{/listSongs}">
+        <h2>Choose a song:</h2>
+        <!-- |...| syntax lets you include both static text and Thymeleaf variables in the same string. -->
+        <div th:each="song, iterStat : ${songs}">
+        <input type="radio" name="trackId" th:value="${song}"
+               th:text="|Song ${iterStat.count}: Title: ${song.title}, Genre: ${song.genre}, Release Year: ${song.releaseYear}, Album: ${song.album.getName()}|">
+        </br>
+        <form th:action="@{'/songs/edit/{songId}' (songId=${song.getId()})}"
+                  th:method="POST">
+                <button type="submit"
+                        class="btn btn-sm btn-info edit-product">
+                    <i class="fa fa-trash">Edit</i>
+                </button>
+        </form>
+
+        <form th:action="@{'/songs/delete/{id}' (id=${song.getId()})}"
+                  th:method="DELETE">
+                <button type="submit"
+                        class="btn btn-sm btn-danger delete-product">
+                    <i class="fa fa-trash">Delete</i>
+                </button>
+        </form>
+
+        </div>
+        <input type='submit' value='Submit'>
+    </form>
+
+    <a class="btn btn-light btn-sm ml-3" href="/songs/add-form">
+        <i class="fa-solid fa-right-from-bracket"></i> Add A New Song
+    </a>
+</main>
+</body>
+</html>

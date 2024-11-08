@@ -1,0 +1,25 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Song Details</title>
+
+</head>
+<body>
+<!-- dynamically display data -->
+<div th:if="${session.song}">
+<header>
+   <h1 th:text="'Song title: ' + ${session.song.title}"></h1>
+</header>
+<section>
+    <h2 th:text="'Genre: ' + ${session.song.genre}"></h2>
+    <h2 th:text="'Year: ' + ${session.song.releaseYear}"></h2>
+    <h2>Performers:</h2>
+    <ul>
+        <!-- |...| syntax lets you include both static text and Thymeleaf variables in the same string. -->
+        <li th:each="performer: ${session.song.performers}"
+            th:text="|${performer.bio} (${performer.firstName} ${performer.lastName})|"></li>
+    </ul>
+</section>
+</div>
+</body>
+</html>
