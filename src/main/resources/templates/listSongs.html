@@ -1,0 +1,36 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Songs Homepage - Welcome to My Music Store</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Welcome to My Music Store</h1>
+</header>
+<main>
+    <!-- Display radio buttons for each song,
+            the value should be the trackId
+            and the displayed text should be Title: <songTitle>, Genre:<genre>, Release Year: <releaseYear> -->
+    <!-- <input type="radio" name="trackId" value="1"> Song 1 <br/>
+    <input type="radio" name="trackId" value="2"> Song 2<br/>
+    <input type="radio" name="trackId" value="3"> Song 3 <br/>
+
+    iterStat is a variable that lets you track details about the current iteration when looping through a collection
+    -->
+    <form th:method="POST" th:action="@{/listSongs}">
+        <h2>Choose a song:</h2>
+        <!-- |...| syntax lets you include both static text and Thymeleaf variables in the same string. -->
+        <div th:each="song, iterStat : ${songs}">
+        <input type="radio" name="track" th:value="${song.trackId}" th:text="|Song ${iterStat.count}:  ${song.title}|">
+        </div>
+        <input type='submit' value='Submit'>
+    </form>
+</main>
+</body>
+</html>
