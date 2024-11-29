@@ -3,7 +3,8 @@ package mk.ukim.finki.wp.lab.service.impl;
 import mk.ukim.finki.wp.lab.model.Artist;
 import mk.ukim.finki.wp.lab.model.exception.ArtistNotFoundException;
 import mk.ukim.finki.wp.lab.model.exception.InvalidArgumentsException;
-import mk.ukim.finki.wp.lab.repository.ArtistRepository;
+import mk.ukim.finki.wp.lab.repository.impl.InMemoryArtistRepository;
+import mk.ukim.finki.wp.lab.repository.jpa.ArtistRepository;
 import mk.ukim.finki.wp.lab.service.ArtistService;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Service
 public class ArtistServiceImpl implements ArtistService {
 
+    //private final InMemoryArtistRepository inMemoryArtistRepository;
     private final ArtistRepository artistRepository;
 
     public ArtistServiceImpl(ArtistRepository artistRepository) {
@@ -29,6 +31,16 @@ public class ArtistServiceImpl implements ArtistService {
             throw new InvalidArgumentsException();
         }
 
-        return artistRepository.findById(id).orElseThrow(ArtistNotFoundException::new);
+        return artistRepository.findById(id).
+                orElseThrow(() -> new ArtistNotFoundException(id));
+    }
+
+    @Override
+    public List<Artist> listByIds(List<Long> artistIds) {
+        if (artistIds.isEmpty()) {
+            throw new InvalidArgumentsException();
+        }
+
+        return artistRepository.findAllByIdIn(artistIds);
     }
 }

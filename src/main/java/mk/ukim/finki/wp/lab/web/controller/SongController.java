@@ -36,7 +36,7 @@ public class SongController {
     }
 
     @GetMapping("/add-form")
-    public String addSongPage(Model model) {
+    public String getAddSongPage(Model model) {
         List<Album> albums = albumService.findAll();
         model.addAttribute("albums", albums);
         return "add-song";
@@ -47,15 +47,22 @@ public class SongController {
                            @RequestParam String title,
                            @RequestParam String genre,
                            @RequestParam Integer releaseYear,
-                           @RequestParam Long albumId) {
-        songService.save(trackId, title, genre, releaseYear, albumId);
+                           @RequestParam Long albumId,
+                           @RequestParam (required = false) List<Long> artistIds) {
+
+        if (artistIds == null  || artistIds.isEmpty()) {
+            songService.saveSongWithAlbum(trackId, title, genre, releaseYear, albumId);
+        }  else {
+            List<Artist> artists = artistService.listByIds(artistIds);
+            songService.saveSongWithAlbumAndArtists(trackId, title, genre, releaseYear, albumId, artists);
+        }
         return "redirect:/songs";
     }
 
-    @PostMapping("edit/{songId}")
-    public String editSongPage(@PathVariable Long songId, Model model) {
-        if (this.songService.findById(songId).isPresent()) {
-            Song song = songService.findById(songId).get();
+    @PostMapping("edit-form/{id}")
+    public String getEditSongForm(@PathVariable Long id, Model model) {
+        if (this.songService.findById(id).isPresent()) {
+            Song song = songService.findById(id).get();
             List<Artist> artists = artistService.listArtists();
             List<Album> albums = albumService.findAll();
             model.addAttribute("song", song);

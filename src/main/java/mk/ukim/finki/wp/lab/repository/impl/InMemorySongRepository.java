@@ -1,4 +1,4 @@
-package mk.ukim.finki.wp.lab.repository;
+package mk.ukim.finki.wp.lab.repository.impl;
 
 import mk.ukim.finki.wp.lab.boostrap.DataHolder;
 import mk.ukim.finki.wp.lab.model.Album;
@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
-public class SongRepository {
+public class InMemorySongRepository {
     public List<Song> findAll() {
         return DataHolder.songs.stream().collect(Collectors.toList());
     }
@@ -40,6 +40,18 @@ public class SongRepository {
         }
 
         Song song = new Song(trackId, title, genre, releaseYear, album);
+        DataHolder.songs.removeIf(s -> s.getTrackId().equals(trackId));
+        DataHolder.songs.add(song);
+        return Optional.of(song);
+    }
+
+    public Optional<Song> saveWithArtists (String trackId, String title, String genre, Integer releaseYear, Album album, List<Artist> artists) {
+        // Create/Update
+        if (trackId == null || title == null || genre == null || releaseYear == null || album == null || artists == null) {
+            throw new IllegalArgumentException();
+        }
+
+        Song song = new Song(trackId, title, genre, releaseYear, album, artists);
         DataHolder.songs.removeIf(s -> s.getTrackId().equals(trackId));
         DataHolder.songs.add(song);
         return Optional.of(song);

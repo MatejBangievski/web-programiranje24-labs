@@ -53,6 +53,8 @@
                            placeholder="Enter Release year">
                 </div>
 
+                </br>
+
                 <div class="form-group">
                     <label>Albums:</label>
                     <select name="albumId" class="form-control">
@@ -68,6 +70,20 @@
                                 th:each="album : ${albums}"
                                 th:value="${album.getId()}"
                                 th:text="|${album.getName()}, ${album.getGenre()}, ${album.getReleaseYear()}|">
+                        </option>
+                    </select>
+                </div>
+
+                </br>
+
+                <div th:if="${artists != null && !artists.isEmpty()}" class="form-group">
+                    <label>Artists:</label>
+                    <select name="artistIds" class="form-control" multiple>
+                        <!-- Loop through all artists -->
+                        <option th:each="artist : ${artists}"
+                                th:value="${artist.id}"
+                                th:text="${artist.firstName} + ' ' + ${artist.lastName}"
+                                th:selected="${song.performers != null && song.performers.contains(artist)}">
                         </option>
                     </select>
                 </div>

@@ -19,11 +19,11 @@ public class Artist {
     private String bio;
 
     public Artist() {
-        this.id = (long) (Math.random() * 1000);
+       // this.id = (long) (Math.random() * 1000);
     }
 
     public Artist(String firstName, String lastName, String bio) {
-        this.id = (long) (Math.random() * 1000);
+       // this.id = (long) (Math.random() * 1000);
         this.firstName = firstName;
         this.lastName = lastName;
         this.bio = bio;

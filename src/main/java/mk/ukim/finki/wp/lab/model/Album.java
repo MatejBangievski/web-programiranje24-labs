@@ -20,11 +20,11 @@ public class Album {
     @OneToMany(mappedBy = "album", fetch = FetchType.EAGER)
     private List<Song> songs;
     public Album() {
-        this.id = (long) (Math.random() * 1000);
+        //this.id = (long) (Math.random() * 1000);
     }
 
     public Album(String name, String genre, String releaseYear) {
-        this.id = (long) (Math.random() * 1000);
+        //this.id = (long) (Math.random() * 1000);
         this.name = name;
         this.genre = genre;
         this.releaseYear = releaseYear;

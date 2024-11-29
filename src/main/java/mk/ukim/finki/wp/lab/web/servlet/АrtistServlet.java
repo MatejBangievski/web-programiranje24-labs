@@ -1,4 +1,4 @@
-package mk.ukim.finki.wp.lab.web;
+package mk.ukim.finki.wp.lab.web.servlet;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -48,7 +48,7 @@ public class АrtistServlet extends HttpServlet {
             //Stavi go artistot vo pesnata i forwardni na druga strana
             Song song = (Song) req.getSession().getAttribute("song");
             Artist artist = artistService.ArtistfindById(artistId);
-            songService.addArtistToSong(artist, song);
+            songService.addArtistToSong(artist.getId(), song.getId());
 
             resp.sendRedirect("/songDetails");
         } else {
