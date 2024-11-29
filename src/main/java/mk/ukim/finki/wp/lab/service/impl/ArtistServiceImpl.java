@@ -31,4 +31,13 @@ public class ArtistServiceImpl implements ArtistService {
 
         return artistRepository.findById(id).orElseThrow(ArtistNotFoundException::new);
     }
+
+    @Override
+    public List<Artist> listByIds(List<Long> artistIds) {
+        if (artistIds.isEmpty()) {
+            throw new InvalidArgumentsException();
+        }
+
+        return artistRepository.findByIds(artistIds);
+    }
 }

@@ -2,10 +2,27 @@
 <head>
     <meta charset="utf-8">
     <title>Songs Homepage - Welcome to My Music Store</title>
-    <style type="text/css">
+    <style type = "text/css">
         body {
             width: 800px;
             margin: auto;
+        }
+        table {
+            width:100%;
+        }
+        table, td, th {
+            border: 1px solid black;
+            padding:3px 2px;
+        }
+        section {
+            float: left;
+            margin: 0 1.5%;
+            width: 63%;
+        }
+        aside {
+            float: right;
+            margin: 0 1.5%;
+            width: 30%;
         }
     </style>
 </head>
@@ -23,36 +40,74 @@
 
     iterStat is a variable that lets you track details about the current iteration when looping through a collection
     -->
-    <form th:method="POST" th:action="@{/listSongs}">
-        <h2>Choose a song:</h2>
-        <!-- |...| syntax lets you include both static text and Thymeleaf variables in the same string. -->
-        <div th:each="song, iterStat : ${songs}">
-        <input type="radio" name="trackId" th:value="${song}"
-               th:text="|Song ${iterStat.count}: Title: ${song.title}, Genre: ${song.genre}, Release Year: ${song.releaseYear}, Album: ${song.album.getName()}|">
-        </br>
-        <form th:action="@{'/songs/edit/{songId}' (songId=${song.getId()})}"
-                  th:method="POST">
-                <button type="submit"
-                        class="btn btn-sm btn-info edit-product">
-                    <i class="fa fa-trash">Edit</i>
-                </button>
-        </form>
-
-        <form th:action="@{'/songs/delete/{id}' (id=${song.getId()})}"
-                  th:method="DELETE">
-                <button type="submit"
-                        class="btn btn-sm btn-danger delete-product">
-                    <i class="fa fa-trash">Delete</i>
-                </button>
-        </form>
-
+    <div class="col-12" th:if="${songs.size() > 0}">
+        <!--This is a Bootstrap class that makes the table horizontally scrollable
+        if its contents are too wide for the screen.  -->
+        <h2>Songs:</h2>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <!--th:scope="col" attribute in this case is used to define the scope of the header cell-->
+                    <th scope="col">Track Id</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Genre</th>
+                    <th scope="col">Release Year</th>
+                    <th scope="col">Album</th>
+                    <th scope="col">Artists</th>
+                    <th scope="col">Buttons</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="song : ${songs}" class="song">
+                    <td th:text="${song.getTrackId()}"></td>
+                    <td th:text="${song.getTitle()}"></td>
+                    <td th:text="${song.getGenre()}"></td>
+                    <td th:text="${song.getReleaseYear()}"></td>
+                    <td th:text="${song.getAlbum() != null}
+                        ? ${song.getAlbum().getName()} : 'No Album'"></td>
+                    <td>
+                        <ul th:if="${song.getPerformers() != null}">
+                            <li th:each="performer : ${song.getPerformers()}"
+                                th:text="|${performer.bio} (${performer.firstName} ${performer.lastName})|"></li>
+                        </ul>
+                        <span th:if="${song.getPerformers() == null}">No Performers</span>
+                    </td>
+                    <td class="text-right">
+                        <th:block>
+                            <form th:action="@{'/songs/edit-form/{id}' (id=${song.getId()})}" th:method="POST">
+                                <button type="submit" class="btn btn-sm btn-info edit-product">
+                                    <i class="fa fa-trash">Edit</i>
+                                </button>
+                            </form>
+                        </th:block>
+                        <th:block>
+                            <form th:action="@{'/songs/delete/{id}' (id=${song.getId()})}" th:method="DELETE">
+                                <button type="submit" class="btn btn-sm btn-danger delete-product">
+                                    <i class="fa fa-trash">Delete</i>
+                                </button>
+                            </form>
+                        </th:block>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-        <input type='submit' value='Submit'>
-    </form>
+    </div>
 
     <a class="btn btn-light btn-sm ml-3" href="/songs/add-form">
         <i class="fa-solid fa-right-from-bracket"></i> Add A New Song
     </a>
+
+    <form th:method="POST" th:action="@{/artists}">
+        <h2>Choose a song in which you'll add an artist:</h2>
+        <!-- |...| syntax lets you include both static text and Thymeleaf variables in the same string. -->
+        <div th:each="song, iterStat : ${songs}">
+            <input type="radio" name="songId" th:value="${song.getId()}" th:text="|Song ${iterStat.count}: Title: ${song.title}|">
+        </div>
+        <input type='submit' value='Submit'>
+    </form>
+
 </main>
 </body>
 </html>

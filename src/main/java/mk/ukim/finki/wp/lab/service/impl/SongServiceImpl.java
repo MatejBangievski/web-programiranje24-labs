@@ -7,6 +7,7 @@ import mk.ukim.finki.wp.lab.model.Song;
 import mk.ukim.finki.wp.lab.model.exception.AlbumNotFoundException;
 import mk.ukim.finki.wp.lab.model.exception.ArtistNotFoundException;
 import mk.ukim.finki.wp.lab.model.exception.InvalidArgumentsException;
+import mk.ukim.finki.wp.lab.model.exception.SongNotFoundException;
 import mk.ukim.finki.wp.lab.repository.AlbumRepository;
 import mk.ukim.finki.wp.lab.repository.ArtistRepository;
 import mk.ukim.finki.wp.lab.repository.SongRepository;
@@ -35,8 +36,8 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public Artist addArtistToSong(Artist artist, Song song) {
-        if (artist == null || song == null) {
+    public Artist addArtistToSong(Artist artist, Long songId) {
+        if (artist == null || songId == null) {
             throw new InvalidArgumentsException();
         }
 
@@ -51,6 +52,11 @@ public class SongServiceImpl implements SongService {
             throw new ArtistNotFoundException();
         }
 
+        if (!songRepository.findById(songId).isPresent()) {
+            throw new SongNotFoundException(songId);
+        }
+
+        Song song = songRepository.findById(songId).get();
         return songRepository.addArtistToSong(artist, song);
     }
 
@@ -71,8 +77,15 @@ public class SongServiceImpl implements SongService {
         return songRepository.save(trackId, title, genre, releaseYear, album);
     }
 
+    public Optional<Song> saveWithArtists (String trackId, String title, String genre, Integer releaseYear, Long albumId, List<Artist> artists) {
+        Album album = albumRepository.findById(albumId)
+                .orElseThrow(() -> new AlbumNotFoundException(albumId));
+        return songRepository.saveWithArtists(trackId, title, genre, releaseYear, album, artists);
+    }
+
     @Override
     public void deleteById(Long id) {
         songRepository.deleteById(id);
     }
+
 }

@@ -45,6 +45,18 @@ public class SongRepository {
         return Optional.of(song);
     }
 
+    public Optional<Song> saveWithArtists (String trackId, String title, String genre, Integer releaseYear, Album album, List<Artist> artists) {
+        // Create/Update
+        if (trackId == null || title == null || genre == null || releaseYear == null || album == null || artists == null) {
+            throw new IllegalArgumentException();
+        }
+
+        Song song = new Song(trackId, title, genre, releaseYear, album, artists);
+        DataHolder.songs.removeIf(s -> s.getTrackId().equals(trackId));
+        DataHolder.songs.add(song);
+        return Optional.of(song);
+    }
+
     public Optional<Song> findById(Long songId) {
         return DataHolder.songs.stream().filter(s -> s.getId().equals(songId)).findFirst();
     }

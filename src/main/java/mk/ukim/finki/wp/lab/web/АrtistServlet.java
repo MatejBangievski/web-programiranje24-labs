@@ -48,7 +48,7 @@ public class АrtistServlet extends HttpServlet {
             //Stavi go artistot vo pesnata i forwardni na druga strana
             Song song = (Song) req.getSession().getAttribute("song");
             Artist artist = artistService.ArtistfindById(artistId);
-            songService.addArtistToSong(artist, song);
+            songService.addArtistToSong(artist, song.getId());
 
             resp.sendRedirect("/songDetails");
         } else {

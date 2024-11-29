@@ -17,4 +17,10 @@ public class ArtistRepository {
     public Optional<Artist> findById(Long id) {
         return DataHolder.artists.stream().filter(a -> a.getId().equals(id)).findFirst();
     }
+
+    public List<Artist> findByIds(List<Long> artistIds) {
+        return DataHolder.artists.stream()
+                .filter(artist -> artistIds.contains(artist.getId()))
+                .collect(Collectors.toList());
+    }
 }
