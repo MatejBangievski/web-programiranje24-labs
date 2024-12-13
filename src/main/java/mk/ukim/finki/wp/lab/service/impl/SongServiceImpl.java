@@ -139,7 +139,7 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public List<Song> findAllByAlbum_Id(Long albumId) {
-        return findAllByAlbum_Id(albumId);
+    public List<Song> getSongsByAlbumId(Long albumId) {
+        return songRepository.findAllByAlbum_Id(albumId);
     }
 }

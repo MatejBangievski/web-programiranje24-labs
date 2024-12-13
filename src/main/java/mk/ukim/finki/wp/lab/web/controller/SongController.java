@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -33,6 +34,23 @@ public class SongController {
 
         model.addAttribute("songs", songService.listSongs());
         return "listSongs";
+    }
+
+    @GetMapping("/albums/{id}")
+    public String getSongsByAlbumPage(@PathVariable Long id,
+                                      Model model) {
+
+        model.addAttribute("album", albumService.findById(id));
+        List<Song> songs = songService.getSongsByAlbumId(id);
+
+        if (songs.isEmpty()) {
+            model.addAttribute("songs", new ArrayList<Song>());
+        } else {
+            model.addAttribute("songs", songService.getSongsByAlbumId(id));
+        }
+
+
+        return "listSongsByAlbum";
     }
 
     @GetMapping("/add-form")

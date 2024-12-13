@@ -16,5 +16,5 @@ public interface SongService{
     public Optional<Song> saveSongWithAlbum (String trackId, String title, String genre, Integer releaseYear, Long albumId);
     public Optional<Song> saveSongWithAlbumAndArtists (String trackId, String title, String genre, Integer releaseYear, Long albumId, List<Artist> artists);
     void deleteById(Long id);
-    public List<Song> findAllByAlbum_Id(Long albumId);
+    public List<Song> getSongsByAlbumId(Long albumId);
 }

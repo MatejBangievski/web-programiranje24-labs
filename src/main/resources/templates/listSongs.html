@@ -64,8 +64,11 @@
                     <td th:text="${song.getTitle()}"></td>
                     <td th:text="${song.getGenre()}"></td>
                     <td th:text="${song.getReleaseYear()}"></td>
-                    <td th:text="${song.getAlbum() != null}
-                        ? ${song.getAlbum().getName()} : 'No Album'"></td>
+                    <td>
+                        <a th:href="@{'/songs/albums/{id}' (id=${song.album.getId()})}"
+                           th:text="${song.album != null ? song.album.name : 'No Album'}">
+                        </a>
+                    </td>
                     <td>
                         <ul th:if="${song.getPerformers() != null}">
                             <li th:each="performer : ${song.getPerformers()}"
@@ -98,6 +101,8 @@
     <a class="btn btn-light btn-sm ml-3" href="/songs/add-form">
         <i class="fa-solid fa-right-from-bracket"></i> Add A New Song
     </a>
+
+    </br>
 
     <form th:method="POST" th:action="@{/artists}">
         <h2>Choose a song in which you'll add an artist:</h2>

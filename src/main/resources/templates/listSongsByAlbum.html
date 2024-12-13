@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List songs by album</title>
+    <style type = "text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+        table {
+            width:100%;
+        }
+        table, td, th {
+            border: 1px solid black;
+            padding:3px 2px;
+        }
+        section {
+            float: left;
+            margin: 0 1.5%;
+            width: 63%;
+        }
+        aside {
+            float: right;
+            margin: 0 1.5%;
+            width: 30%;
+        }
+    </style>
+</head>
+<body>
+    <h1 th:text="'Album: ' + ${album.get().name}"></h1>
+
+    <h2>Songs</h2>
+    <ul>
+        <li th:each="song : ${songs}" th:text="${song.getTitle()}"></li>
+    </ul>
+
+    <form action="/songs" method="GET" style="display:inline;">
+        <button class="btn btn-light btn-sm ml-3">
+            <i class="fa-solid fa-right-from-bracket"></i> Back to songs
+        </button>
+    </form>
+</body>
+</html>
