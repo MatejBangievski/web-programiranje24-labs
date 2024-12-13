@@ -43,4 +43,13 @@ public class ArtistServiceImpl implements ArtistService {
 
         return artistRepository.findAllByIdIn(artistIds);
     }
+
+    @Override
+    public List<Artist> listByIds(List<Long> artistIds) {
+        if (artistIds.isEmpty()) {
+            throw new InvalidArgumentsException();
+        }
+
+        return artistRepository.findByIds(artistIds);
+    }
 }
